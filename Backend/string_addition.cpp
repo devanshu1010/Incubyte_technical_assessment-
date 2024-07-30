@@ -9,13 +9,64 @@ int stringAdditon(string numbers)
         return 0; // Handling Test Case :1 ""
 
     int sum =0; // Initializing sum with 0(zero)
+    char delimiter = ',';
+    
+    if(n >= 5)
+    {
+        //;\n1
+        cout << numbers[3]  << endl;
+        if(numbers[0] == '/'&& numbers[1] == '/' && !(numbers[2] >= '0' && numbers[2]<='9') && numbers[3] == '\\' && numbers[4] =='n' && (numbers[5] >= '0' && numbers[5]<='9') )
+        {
+            delimiter = numbers[2];
+            cout << "delimeter changed : "<<delimiter << endl;
+        }
+    }
+
+    vector<int> negative_num;
 
     for(int i = 0 ;i< n ;i++)
     {
-        if(numbers[i] >= '0' && numbers[i]<='9') // Allowing only 0-9 in the block for addition
+        try
         {
-            sum += numbers[i] - '0'; // converting char to int
+            int j =i;
+            string temp = "";
+            while ( numbers[i] != delimiter && numbers[j] >= '0' && numbers[j]<='9')
+            {
+                temp += numbers[j];
+                j++;
+                i = j-1;
+            }
+            
+            if(temp != "") // Allowing only 0-9 in the block for addition
+            {
+                sum += stoi(temp); // converting string to int
+            }
+            else if(numbers[i] == '-')
+            {
+                throw (numbers[i+1] - '0');
+            }
+            
+
         }
+        catch(int num)
+        {
+            negative_num.push_back(num);
+            i++;
+        }
+        
+    }
+
+    int size = negative_num.size();
+
+    if(size>0)
+    {
+        cout << "negative numbers not allowed : ";
+
+        for(int i : negative_num)
+        {
+            cout << "-"<< i << ",";
+        }
+        cout << endl;
     }
 
     return sum; // returning int sum (Addition of all numbers)
