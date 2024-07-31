@@ -15,12 +15,13 @@ vector<string> getStrings(string& str, string& delimiter) {
         if (str.compare(end, delimiterLength, delimiter) == 0) {
             
             // Add the token (substring before the delimiter) to the result
-            
             strings.push_back(str.substr(start, end - start - delimiterLength + 1));
             
             // Move `start` to the position after the delimiter
             start = end + 1;
-            end = start;
+
+            // incrementing end to point next
+            end++;
         } else {
             end++;
         }
@@ -29,7 +30,7 @@ vector<string> getStrings(string& str, string& delimiter) {
     // Add the last token after the last delimiter
     strings.push_back(str.substr(start));
 
-    return strings;
+    return strings; // returning all separated string numbers
 }
 
 vector<string> splitByNewline(vector<string>& tokens) {
@@ -43,9 +44,9 @@ vector<string> splitByNewline(vector<string>& tokens) {
 
         while(end < n)
         {
-            if(token[end] == '\n')
+            if(token[end] == '\n') // if we find '\n' which we have to eliminate 
             {
-                result.push_back(token.substr(start, end - start));
+                result.push_back(token.substr(start, end - start));// adding string number which is before '\n'
                 start = end + 1;
             }
             end++;
@@ -61,16 +62,16 @@ vector<string> splitByNewline(vector<string>& tokens) {
 int addStrings(vector<string>& strings)
 {
     int sum = 0;
-    vector<int> negativeNumbers;
+    vector<int> negativeNumbers; // to store negative numbers
 
     for (const auto& token : strings) {
         if (token.empty()) continue;
 
         try
         {
-            int num = stoi(token);
+            int num = stoi(token);// converting string to int
             if (num < 0) {
-                throw num;
+                throw num; // negative number found
             } else {
                 sum += num;
             }
@@ -108,17 +109,17 @@ int stringAdditon(string numbers)
 
     string nums = numbers;
 
-    if(numbers.substr(0, 2) == "//")
+    if(numbers.substr(0, 2) == "//") // checking if we are changing delimeter or not
     {
         auto DelimiterPosition = numbers.find("\n");
         delimiter = numbers.substr(2, DelimiterPosition - 2);
         nums = numbers.substr(DelimiterPosition + 1);
     }
 
-    vector<string> strings = getStrings(nums,delimiter);
+    vector<string> strings = getStrings(nums,delimiter); //separating all string numbers w.r.t. delimeter 
 
-    vector<string> s = splitByNewline(strings);
-    sum = addStrings(s);
+    vector<string> s = splitByNewline(strings); // removing and separating '\n' from string numbers 
+    sum = addStrings(s); // finding sum of all string numbers
 
     return sum; // returning int sum (Addition of all numbers)
 }
@@ -136,7 +137,7 @@ int main()
         input += line + "\n";  
     }
 
-    // Remove trailing newline if any
+    // Remove unnecessary newline if any
     if (!input.empty() && input.back() == '\n') {
         input.pop_back();
     }
